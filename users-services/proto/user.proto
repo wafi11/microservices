@@ -2,7 +2,8 @@ syntax = "proto3";
 
 package user;
 
-option go_package = "github.com/wafi11/microservices/users-services/proto";
+// Pastikan ini sesuai dengan lokasi folder proto kamu
+option go_package = "./proto";
 
 message UserResponse {
   int32 id = 1;
