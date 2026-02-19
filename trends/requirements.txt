@@ -1,0 +1,4 @@
+pytrends==4.9.2
+kafka-python-ng
+pandas
+numpy
