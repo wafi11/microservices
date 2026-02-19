@@ -21,6 +21,30 @@ message RegisterRequest {
   string password = 4;
 }
 
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message FindMeRequest {
+  int32 userId = 1;
+}
+
+message FindMeResponse {
+  string full_name = 1;
+  string username = 2;
+  string email = 3;
+  string phone_number = 4;
+  bool is_active = 5;
+  string created_at = 6;
+}
+
 service UserService {
   rpc RegisterUser(RegisterRequest) returns (UserResponse);
+  rpc LoginUser(LoginRequest)  returns (LoginResponse);
+  rpc FindMe(FindMeRequest) returns (FindMeResponse);
 }

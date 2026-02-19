@@ -1,17 +1,25 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 
+	"github.com/wafi11/microservices/users-services/config"
 	"github.com/wafi11/microservices/users-services/internal"
 	"github.com/wafi11/microservices/users-services/proto"
 	"google.golang.org/grpc"
 )
 
 func main() {
+	db := config.NewDatabaseConfig()
+	conn, err := db.Connect()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// setup dependencies
-	repo := internal.NewUserRepository()
+	repo := internal.NewUserRepository(conn)
 	service := internal.NewUserService(repo)
 
 	// gRPC server
