@@ -1,52 +1,36 @@
 use serde::{Deserialize, Serialize};
-use sqlx::FromRow;
+use serde_json::Value;
 
-// Serialize:   Struct Rust  →  JSON  (send ke client)
-// Deserialize: JSON         →  Struct Rust  (get dari client)
-#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
-pub struct Post {
-    pub id: i32,
-    pub title: Option<String>,
-    pub description: Option<String>,
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct InterestOverTime {
+    #[serde(rename = "type")]
+   pub msg_type: String,
+   pub  fetched_at: String,
+   pub  timestamp: String,
+   pub  data: std::collections::HashMap<String, f64>,
 }
 
-#[derive(Debug, Deserialize)]
-pub struct CreatePost {
-    pub title: String,
-    pub description: String,
+#[derive(Debug, Deserialize, Serialize)]
+pub struct RelatedQuery {
+    pub query: String,
+    pub value: Value,
 }
 
-#[derive(Debug, Serialize)]
-pub struct ApiResponse<T: Serialize> {
-    pub status_code: u16,
-    pub success: bool,
-    pub message: String,
-    pub data: Option<T>,
+#[derive(Debug, Deserialize, Serialize)]
+pub struct RelatedQueries {
+    #[serde(rename = "type")]
+    pub msg_type: String,
+    pub fetched_at: String,
+    pub keyword: String,
+    pub data: Vec<RelatedQuery>,
 }
 
-#[derive(Debug, Serialize)]
-pub struct RootResponse {
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct CleanedInterest {
+    #[serde(rename = "type")]
+    pub msg_type: String,
+    pub fetched_at: String,
     pub timestamp: String,
-    pub message: String,
-    pub status : i16
-}
-
-impl<T: Serialize> ApiResponse<T> {
-    pub fn success(status_code: u16, data: Option<T>) -> Self {
-        ApiResponse {
-            status_code,
-            success: true,
-            message: "Success".to_string(),
-            data,
-        }
-    }
-
-    // pub fn error(status_code: u16, message: &str) -> Self {
-    //     ApiResponse {
-    //         status_code,
-    //         success: false,
-    //         message: message.to_string(),
-    //         data: None,
-    //     }
-    // }
+    pub data: std::collections::HashMap<String, f64>,
+    pub is_normalized: bool,
 }
